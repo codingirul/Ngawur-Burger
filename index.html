@@ -1,0 +1,259 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#17392B"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Ngawur"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" id="ai" href="">
+<title>Ngawur Burger – Kalkulator Usaha</title>
+<style>
+:root{--g:#17392B;--o:#E8552D;--k:#EEE2CC;--k2:#F8F1E3;--gr:#2e8b57;--ye:#c99700;--re:#c8321b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--k);color:#1d2a22;font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;padding:0 env(safe-area-inset-right) 0 env(safe-area-inset-left)}
+header{flex-wrap:wrap;gap:2px 10px;background:var(--g);color:var(--k);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:baseline}
+h1{margin:0;font:900 24px/1 system-ui;letter-spacing:-.5px}header span{color:var(--o);font-weight:700}
+#sy{margin-left:auto;font-size:12px;color:#bfb293}
+#ban{background:var(--o);color:#fff;font-weight:700;padding:8px 16px}#ban:empty{display:none}
+main{max-width:1100px;margin:0 auto;padding:12px 12px 100px}
+.grid>*{min-width:0}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,370px),1fr));align-items:start;margin-bottom:12px}
+.c{background:var(--k2);border:2px solid var(--g);border-radius:10px;padding:12px}
+h2,h3,h4{margin:4px 0 6px}
+summary{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:44px;font-weight:700;cursor:pointer}
+summary>span:first-child{min-width:0;overflow-wrap:anywhere}
+summary::after{content:'▾';color:var(--o);flex:none}details[open]>summary::after{content:'▴'}
+.r2 .b{margin:0;padding:0;width:44px}
+td:first-child{min-width:96px}
+@media(max-width:400px){header span{display:none}}
+summary small{display:block;font-weight:400;color:#4a5a50}
+label{display:block;font-size:13px;color:#4a5a50;margin:6px 0}
+input,select,textarea{font:inherit;font-size:16px;min-height:44px;width:100%;padding:8px 10px;border:1.5px solid #b9a98a;border-radius:8px;background:#fff;color:inherit}
+.bad{border-color:var(--re);background:#fde8e4}
+.r{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.r2{display:grid;grid-template-columns:1fr 84px 44px;gap:6px;margin-top:6px}
+.b{min-height:44px;padding:0 14px;border:0;border-radius:8px;background:var(--o);color:#fff;font:700 16px system-ui;cursor:pointer;margin:4px 6px 4px 0}
+.b.s{background:var(--g)}.b.l{background:none;color:var(--re);border:1.5px solid var(--re)}
+.t{display:inline-block;padding:2px 10px;border-radius:99px;font-weight:700;color:#fff;font-size:14px}
+.tg{background:var(--gr)}.ty{background:var(--ye)}.tr{background:var(--re)}.tn{background:#888}
+.w{color:var(--re);font-style:normal;font-weight:600}.neg{color:var(--re)}
+.big{font:900 26px/1.15 system-ui;color:var(--g);margin:2px 0}.lb{font-size:13px;color:#4a5a50}
+dl{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin:8px 0}dt{color:#4a5a50}dd{margin:0;text-align:right;font-weight:700}
+.f{font-size:13px;margin-top:6px}.f summary{justify-content:flex-start;gap:6px;min-height:32px;color:var(--o);font-weight:600}.f p{margin:2px 0}
+.hint{font-size:14px;color:#4a5a50}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:6px 4px;text-align:right;border-bottom:1px solid #d9c9a8}th:first-child,td:first-child{text-align:left}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;overflow-x:auto;background:var(--g);padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);z-index:5}
+nav button{flex:1 0 66px;min-height:52px;border:0;border-top:3px solid transparent;background:none;color:#bfb293;font:600 13px system-ui;padding:0 2px}
+nav button.on{color:#fff;border-top-color:var(--o)}
+:focus-visible{outline:3px solid var(--o);outline-offset:1px}
+@media print{nav,header,#ban,.f,.np,button{display:none!important}.c{break-inside:avoid}}
+</style></head><body>
+<header><h1>Ngawur Burger</h1><span>Kalkulator usaha</span><small id="sy"></small></header><div id="ban"></div>
+<main id="v"></main>
+<nav><button data-t="home">Ringkasan</button><button data-t="ing">Bahan</button><button data-t="menu">Menu</button><button data-t="cost">Biaya</button><button data-t="sim">Simulasi</button><button data-t="shop">Belanja</button><button data-t="on">Online</button><button data-t="pk">Promo</button><button data-t="data">Data</button></nav>
+<input type="file" id="fi" accept=".json,application/json" hidden>
+<script>
+//#CALC
+const N=v=>{if(typeof v==='number')return isFinite(v)&&v>=0?v:null;if(v==null)return null;let s=String(v).trim().replace(/rp|%|\s/gi,'');if(!s||/[^\d.,]/.test(s))return null;
+if(s.includes(','))s=s.replace(/\./g,'').replace(',','.');else if(/^\d{1,3}(\.\d{3})+$/.test(s))s=s.replace(/\./g,'');
+if(!/^(\d+\.?\d*|\.\d+)$/.test(s))return null;const n=parseFloat(s);return isFinite(n)?n:null};
+const rp=n=>{if(n==null||!isFinite(n))return'–';const r=Math.round(n);return(r<0?'-':'')+'Rp '+String(Math.abs(r)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')};
+const pc=n=>n==null||!isFinite(n)?'–':n.toFixed(1).replace('.',',')+'%';
+const nf=n=>{if(n==null||!isFinite(n))return'–';const[a,b]=String(Math.round(n*10)/10).split('.');return a.replace(/\B(?=(\d{3})+(?!\d))/g,'.')+(b?','+b:'')};
+const ru=c=>c<100?'Rp '+c.toFixed(2).replace('.',','):rp(c);
+function uc(S,id,d=0){const i=S.ing.find(x=>x.id===id);if(!i||d>5)return null;
+if(i.mix){const y=N(i.yield);if(!y)return null;let t=0;for(const m of i.mix){const q=N(m.q),c=uc(S,m.id,d+1);if(q==null||c==null)return null;t+=q*c}return t/y}
+const p=N(i.price),q=N(i.qty),l=Math.min(N(i.loss)||0,95);if(p==null||!q)return null;return p/(q*(1-l/100))}
+function hpp(S,m){let t=0,miss=0;for(const r of m.rec){const c=uc(S,r.id),q=N(r.q);if(c==null||q==null)miss++;else t+=c*q}return{v:t,miss:m.rec.length?miss:1}}
+function an(price,h){const p=N(price);if(!p)return null;return{gp:p-h,mg:(p-h)/p*100,fc:h/p*100}}
+const st=(S,fc)=>fc<=(N(S.set.fcG)??35)?'g':fc<=(N(S.set.fcY)??45)?'y':'r';
+function sg(h,fc,mg,step){const up=x=>Math.ceil(x/step-1e-9)*step;return{a:fc>0&&fc<100?up(h/(fc/100)):null,b:mg>0&&mg<100?up(h/(1-mg/100)):null}}
+function fx(S){const m=['sewa','gaji','gas','listrik','promosi','lain'].reduce((a,k)=>a+(N(S.opex[k])||0),0),d=N(S.set.days);return{m,days:d,d:d>0?m/d:null}}
+function sm(S,f=1){let q=0,om=0,hp=0,miss=0;for(const m of S.menu){const n=(N(S.sim[m.id])||0)*f;if(!n)continue;const h=hpp(S,m);q+=n;om+=(N(m.price)||0)*n;hp+=h.v*n;if(h.miss||!N(m.price))miss++}
+const F=fx(S),gp=om-hp,net=F.d==null?null:gp-F.d;return{q,om,hp,gp,net,mon:net==null?null:net*F.days,miss,F}}
+function bep(S){const s=sm(S),F=s.F;if(!s.q||s.om<=0)return{err:'Isi jumlah jualan di tab Simulasi dulu.'};if(F.d==null)return{err:'Isi hari buka (harus lebih dari 0) di tab Biaya.'};
+const c=s.gp/s.q;if(c<=0)return{err:'Laba kotor per porsi nol atau minus, jadi tidak ada titik impas. Naikkan harga atau turunkan HPP.'};
+const r=s.gp/s.om;return{c,pd:Math.ceil(F.d/c-1e-9),rd:F.d/r,pm:Math.ceil(F.m/c-1e-9),rm:F.m/r}}
+function bh(S,net){const r=Math.min(N(S.set.res)||0,100),ps=S.set.part.map(p=>N(p.p)||0),n=Math.max(net,0),res=n*r/100;return{r,res,tot:ps.reduce((a,b)=>a+b,0),parts:ps.map(p=>(n-res)*p/100)}}
+function need(S,f=1,bad){const o={},add=(id,q,d)=>{const i=S.ing.find(x=>x.id===id);if(!i||d>5||!(q>0))return;if(i.mix){const y=N(i.yield);if(!y){bad&&bad.push(i.n);return}for(const m of i.mix)add(m.id,q*(N(m.q)||0)/y,d+1)}else o[id]=(o[id]||0)+q};
+for(const m of S.menu){const n=(N(S.sim[m.id])||0)*f;if(n)for(const r of m.rec)add(r.id,n*(N(r.q)||0),0)}return o}
+function shop(S){const f=S.set.per==='Mingguan'?(N(S.set.dpw)||0):1,b=N(S.set.bufr)||0,bad=[],nd=need(S,f,bad),rows=[];let tot=0,miss=0;
+for(const id in nd){const i=S.ing.find(x=>x.id===id),l=Math.min(N(i.loss)||0,95),g=nd[id]/(1-l/100)*(1+b/100),q=N(i.qty),p=N(i.price);let k=null,c=null;if(q&&p!=null){k=Math.ceil(g/q-1e-9);c=k*p;tot+=c}else miss++;rows.push({i,g,k,c})}
+rows.sort((a,b)=>a.i.n.localeCompare(b.i.n));return{rows,tot,miss,f,bad:[...new Set(bad)]}}
+const onp=(price,kom,step)=>{const p=N(price),k=N(kom);return p&&k!=null&&k<100?(k===0?p:Math.ceil(p/(1-k/100)/step-1e-9)*step):null};
+function pkg(S,k){let nor=0,h=0,miss=0;for(const it of k.items){const m=S.menu.find(x=>x.id===it.id),q=N(it.q);if(!m||q==null)continue;nor+=(N(m.price)||0)*q;const t=hpp(S,m);h+=t.v*q;if(t.miss)miss++}
+let pr=N(k.price);const d=N(k.disc);if(pr==null&&d!=null)pr=nor*(1-Math.min(d,100)/100);if(!pr)return{nor,h,miss,pr:null};
+const gp=pr-h,ngp=nor-h;return{nor,h,miss,pr,gp,ngp,mg:gp/pr*100,fc:h/pr*100,save:nor-pr,more:gp>0?(ngp/gp-1)*100:null}}
+//#/CALC
+const $=id=>document.getElementById(id),KEY='ngawur_v1',BK='ngawur_backup',OPEN=new Set(),LBL={g:'Aman',y:'Waspada',r:'Tinggi'};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ID=()=>Math.random().toString(36).slice(2,8);
+const ING=[['dg','Daging sapi giling Australia','g'],['ke','Keju slice','pcs'],['bn','Bun burger','pcs'],['bb','Bawang bombay','g'],['pk','Acar / pickle timun','g'],['my','Mayones','g'],['st','Saus tomat','g'],['kb','Kemasan burger','pcs'],['kt','Kentang beku','g'],['mg','Minyak goreng','ml'],['ng','Nugget ayam','pcs'],['kr','Chicken karage','g'],['tl','Telur','pcs'],['ks','Kemasan sides','pcs'],['ky','Kunyit','g'],['as','Asam jawa','g'],['gl','Gula','g'],['cp','Cup + tutup minuman','pcs'],['bd','Badak (jadi)','pcs'],['tb','Teh Botol (jadi)','pcs'],['am','Air mineral 600 ml','pcs']];
+const EX={dg:[130000,1000,0],ke:[38000,20,0],bn:[18000,6,0],bb:[30000,1000,15],pk:[40000,1000,0],my:[35000,1000,0],st:[25000,1000,0],kb:[30000,100,0],kt:[40000,1000,5],mg:[18000,1000,0],ng:[45000,40,0],kr:[60000,1000,0],tl:[28000,16,0],ks:[20000,100,0],ky:[20000,1000,10],as:[20000,1000,0],gl:[18000,1000,0],cp:[25000,50,0],bd:[9000,1,0],tb:[4500,1,0],am:[2800,1,0]};
+const R=(...a)=>{const r=[];for(let i=0;i<a.length;i+=2)r.push({id:a[i],q:a[i+1]});return r};
+const bg=(n,p,k,c)=>({n,cat:'Burger',price:p,rec:R('dg',60*k,...(c?['ke',k]:[]),'bn',1,'bb',15,'sp',20,'kb',1)});
+const Q=[20,12,5,15,10,4,15,10,8,5,10,12,12,15,8,10,3,5,5];
+function seed(ex){
+const ing=ING.map(([id,n,unit])=>({id,n,unit,price:ex?EX[id][0]:null,qty:ex?EX[id][1]:null,loss:ex?EX[id][2]:null}));
+ing.push({id:'sp',n:'Ngawur Pickle Sauce (olahan)',unit:'g',mix:R('pk',ex?200:null,'my',ex?300:null,'st',ex?100:null),yield:ex?600:null});
+ing.push({id:'kj',n:'Kunyit asam jawa (olahan)',unit:'ml',mix:R('ky',ex?100:null,'as',ex?50:null,'gl',ex?150:null),yield:ex?1500:null});
+const menu=[bg('Ngawur Single Cheese',27000,1,1),bg('Ngawur Double Cheese',42000,2,1),bg('Ngawur Triple Cheese',59000,3,1),bg('Ngawur Single',23000,1),bg('Ngawur Double',35000,2),bg('Ngawur Triple',49000,3),
+{n:'French Fries',cat:'Sides',price:15000,rec:R('kt',150,'mg',15,'ks',1)},{n:'Nugget',cat:'Sides',price:17000,rec:R('ng',5,'mg',15,'ks',1)},{n:'Chicken Karage',cat:'Sides',price:25000,rec:R('kr',100,'mg',15,'ks',1)},
+{n:'Mix Platter',cat:'Sides',price:30000,rec:R('kt',100,'ng',3,'kr',60,'mg',20,'ks',1)},
+{n:'Badak',cat:'Drinks',price:15000,rec:R('bd',1)},{n:'Kunyit Asam Jawa',cat:'Drinks',price:10000,rec:R('kj',250,'cp',1)},{n:'Teh Botol',cat:'Drinks',price:7000,rec:R('tb',1)},{n:'Air Mineral 600 ml',cat:'Drinks',price:6000,rec:R('am',1)},
+{n:'Telur',cat:'Add-on',price:5000,rec:R('tl',1)},{n:'Keju',cat:'Add-on',price:5000,rec:R('ke',1)},{n:'Beef Patty',cat:'Add-on',price:13000,rec:R('dg',60)},{n:'Bawang Bombay',cat:'Add-on',price:3000,rec:R('bb',30)},{n:'Saus Ngawur',cat:'Add-on',price:3000,rec:R('sp',20)}].map((m,i)=>({id:'m'+i,...m}));
+const ox={sewa:3000000,gaji:2500000,gas:300000,listrik:400000,promosi:500000,lain:300000};
+return mig({v:1,sample:!!ex,meta:null,ing,menu,opex:ex?ox:{sewa:null,gaji:null,gas:null,listrik:null,promosi:null,lain:null},sim:ex?Object.fromEntries(menu.map((m,i)=>[m.id,Q[i]])):{},
+set:{fcG:35,fcY:45,tfc:35,tmg:60,step:1000,days:ex?26:null,sc:[70,100,130],res:10,part:[{n:'Saya',p:50},{n:'Partner',p:50}],user:''}},ex)}
+function mig(o,ex){const s=o.set;s.per=s.per||'Harian';s.dpw=s.dpw??6;s.bufr=s.bufr??10;
+o.pk=o.pk||(ex?[{id:'p0',n:'Paket Hemat Double (CONTOH)',items:R('m1',1,'m6',1,'m11',1),disc:null,price:62000}]:[]);
+o.on=o.on||{sel:0,plat:['GoFood','GrabFood','ShopeeFood'].map(n=>({n,kom:ex?20:null}))};return o}
+let S,tab='home',O={},bad=0;
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(S));bad=0}catch(e){bad=1}mark()}
+function save(){S.meta={at:new Date().toISOString(),by:S.set.user||''};persist()}
+function bk(){try{localStorage.setItem(BK,JSON.stringify(S))}catch(e){}}
+try{const j=JSON.parse(localStorage.getItem(KEY));if(j&&j.v===1&&j.ing&&j.menu&&j.set&&j.opex&&j.sim)S=j}catch(e){}
+S=mig(S||seed(0));
+const F=t=>`<details class="f"><summary>Lihat rumus</summary><p>${t}</p></details>`;
+const P=(p,v,x='')=>`<input data-p="${p}" value="${esc(v??'')}" inputmode="decimal" autocomplete="off" ${x}>`;
+const T=(p,v)=>`<input data-p="${p}" value="${esc(v??'')}" autocomplete="off">`;
+const L=(t,h)=>`<label>${t}${h}</label>`;
+const opts=(s,ex)=>S.ing.filter(i=>i.id!==ex).map(i=>`<option value="${i.id}"${i.id===s?' selected':''}>${esc(i.n)}</option>`).join('');
+const sel=(p,v,a)=>`<select data-p="${p}">${a.map(x=>`<option${x==v?' selected':''}>${x}</option>`).join('')}</select>`;
+const dt=k=>OPEN.has(k)?' open':'';
+function icard(i,x){const k='i'+i.id,p=`ing,${x},`;
+return `<details class="c" data-k="${k}"${dt(k)}><summary><span>${esc(i.n)||'(tanpa nama)'}${i.mix?'<small>bahan olahan</small>':''}</span><b data-o="u${i.id}"></b></summary>`+L('Nama',T(p+'n',i.n))+
+(i.mix?`<div class="r">${L('Hasil jadi (jumlah)',P(p+'yield',i.yield))}${L('Satuan',T(p+'unit',i.unit))}</div><h4>Campuran</h4>`+i.mix.map((m,j)=>`<div class="r2"><select data-p="${p}mix,${j},id">${opts(m.id,i.id)}</select>${P(p+`mix,${j},q`,m.q,'placeholder="jml"')}<button class="b l" data-a="mixDel" data-i="${x}" data-j="${j}" aria-label="Hapus">×</button></div>`).join('')+`<button class="b s" data-a="mixAdd" data-i="${x}">+ Campuran</button>`+F('Biaya per satuan = total biaya semua campuran ÷ hasil jadi. Hasil jadi = berat/volume akhir setelah dicampur atau dimasak.'):
+`<div class="r">${L('Harga beli (Rp)',P(p+'price',i.price))}${L('Isi per kemasan',P(p+'qty',i.qty))}${L('Satuan pakai',T(p+'unit',i.unit))}${L('Susut %',P(p+'loss',i.loss))}</div>`+F('Harga per satuan = harga beli ÷ (isi per kemasan × (1 − susut%)). Contoh: Rp130.000 per 1.000 g = Rp130/g.'))+
+`<button class="b l" data-a="delIng" data-i="${x}">Hapus bahan</button></details>`}
+function mcard(m,x){const k='m'+m.id,p=`menu,${x},`;
+return `<details class="c" data-k="${k}"${dt(k)}><summary><span>${esc(m.n)||'(tanpa nama)'}<small data-o="pr${m.id}"></small></span><span data-o="bd${m.id}"></span></summary>`+L('Nama menu',T(p+'n',m.n))+
+`<div class="r">${L('Harga jual (Rp)',P(p+'price',m.price))}${L('Kategori',sel(p+'cat',m.cat,['Burger','Sides','Drinks','Add-on']))}</div><h4>Resep per 1 porsi</h4>`+
+m.rec.map((r,j)=>{const g=S.ing.find(y=>y.id===r.id);return `<div><div class="r2"><select data-p="${p}rec,${j},id">${opts(r.id)}</select>${P(p+`rec,${j},q`,r.q,'placeholder="jml"')}<button class="b l" data-a="recDel" data-i="${x}" data-j="${j}" aria-label="Hapus">×</button></div><small class="hint">${g?esc(g.unit):'?'} · biaya <b data-o="rc${m.id}_${j}"></b></small></div>`}).join('')+
+`<button class="b s" data-a="recAdd" data-i="${x}">+ Bahan</button><dl><dt>HPP</dt><dd data-o="hp${m.id}"></dd><dt>Laba kotor</dt><dd data-o="gp${m.id}"></dd><dt>Food cost</dt><dd data-o="fc${m.id}"></dd></dl>`+
+F('HPP = jumlah (biaya per satuan × takaran) semua bahan resep. Laba kotor = harga − HPP. Margin = laba kotor ÷ harga. Food cost = HPP ÷ harga.')+
+`<h4>Saran harga jual</h4><div data-o="sg${m.id}"></div>`+F('Dari food cost: HPP ÷ target food cost%. Dari margin: HPP ÷ (1 − margin%). Keduanya dibulatkan ke atas ke kelipatan 500/1.000.')+
+`<button class="b l" data-a="delMenu" data-i="${x}">Hapus menu</button></details>`}
+const SC=['Pesimis','Normal','Optimis'];
+const V={
+home(){const blank=S.ing.every(i=>i.mix||N(i.price)==null);
+const st=[['Laba bersih per hari','net','Laba kotor sehari (omzet − HPP) dikurangi biaya tetap per hari. Memakai skenario Normal di Simulasi.'],['Proyeksi laba bersih per bulan','mon','Laba bersih per hari × hari buka.'],['Titik impas (BEP)','bep','Biaya tetap ÷ laba kotor rata-rata per porsi, dibulatkan ke atas. Komposisi menu dari Simulasi Normal.'],['Margin rata-rata','mg','Laba kotor ÷ omzet, dari komposisi jualan Normal.'],['Menu paling untung','top','Menu dengan margin % tertinggi (HPP harus lengkap).'],['Menu paling tipis','low','Menu dengan margin % terendah (HPP harus lengkap).']];
+return (blank?`<div class="c" style="margin-bottom:12px"><h2>Mulai dari sini</h2><p>1. Tab <b>Bahan</b>: isi harga beli tiap bahan.<br>2. Tab <b>Menu</b>: cek resep, harga, dan food cost.<br>3. Tab <b>Biaya</b>, lalu <b>Simulasi</b>: isi jualan per hari.</p><p>Mau lihat dulu cara kerjanya?</p><button class="b s" data-a="sample">Muat data CONTOH</button></div>`:'')+
+`<div class="grid">`+st.map(([t,k,f])=>`<div class="c"><div class="lb">${t}</div><div class="big" data-o="h_${k}"></div>${F(f)}</div>`).join('')+`</div><p class="hint" data-o="hnote"></p>`},
+ing(){return `<p class="hint">Isi <b>harga beli</b> dan <b>isi per kemasan</b>. Contoh daging 1 kg: harga 130000, isi 1000, satuan g. <b>Susut %</b> = bagian terbuang saat diolah (mis. kupas bawang). Bahan olahan (saus, kunyit asam) = campuran bahan lain; isi takaran dan hasil jadinya.</p><div class="grid">`+S.ing.map(icard).join('')+`</div><button class="b s" data-a="addIng">+ Bahan</button><button class="b s" data-a="addMix">+ Bahan olahan</button>`},
+menu(){const s=S.set;return `<div class="c" style="margin-bottom:12px"><h3>Pengaturan food cost</h3><div class="r">${L('Hijau jika ≤ (%)',P('set,fcG',s.fcG))}${L('Merah jika > (%)',P('set,fcY',s.fcY))}${L('Target food cost (%)',P('set,tfc',s.tfc))}${L('Target margin (%)',P('set,tmg',s.tmg))}${L('Pembulatan harga',sel('set,step',s.step,[500,1000]))}</div></div><div class="grid">`+S.menu.map(mcard).join('')+`</div><button class="b s" data-a="addMenu">+ Menu / add-on</button>`},
+cost(){return `<div class="grid"><div class="c"><h3>Biaya operasional per bulan</h3>`+[['sewa','Sewa'],['gaji','Gaji'],['gas','Gas'],['listrik','Listrik'],['promosi','Promosi'],['lain','Lain-lain']].map(([k,t])=>L(t+' (Rp)',P('opex,'+k,S.opex[k]))).join('')+L('Hari buka per bulan',P('set,days',S.set.days))+`</div><div class="c"><h3>Hasil</h3><dl><dt>Total per bulan</dt><dd data-o="ox"></dd><dt>Biaya tetap per hari</dt><dd data-o="od"></dd></dl>${F('Biaya tetap per hari = total biaya bulanan ÷ hari buka.')}</div></div>`},
+sim(){const s=S.set;return `<div class="grid"><div class="c"><h3>Jualan per hari (Normal)</h3>`+S.menu.map(m=>`<label>${esc(m.n)}${P('sim,'+m.id,S.sim[m.id],'placeholder="0"')}</label>`).join('')+`</div><div>
+<div class="c" style="margin-bottom:12px"><h3>Skenario (% dari Normal)</h3><div class="r">${SC.map((n,i)=>i===1?L(n,'<input value="100" disabled>'):L(n,P('set,sc,'+i,s.sc[i]))).join('')}</div></div>
+<div class="c" style="margin-bottom:12px"><h3>Hasil per skenario</h3><div class="tw"><table><tr><th></th>${SC.map(n=>`<th>${n}</th>`).join('')}</tr>${[['q','Porsi/hari'],['om','Omzet'],['hp','HPP'],['gp','Laba kotor'],['fd','Biaya tetap'],['nt','Laba bersih/hari'],['mn','Proyeksi/bulan']].map(([k,t])=>`<tr><td>${t}</td>${[0,1,2].map(i=>`<td data-o="s${i}${k}"></td>`).join('')}</tr>`).join('')}</table></div>${F('Omzet = harga × porsi. Laba kotor = omzet − HPP. Laba bersih = laba kotor − biaya tetap per hari. Bulanan = laba bersih × hari buka. Porsi tiap skenario = porsi Normal × persen skenario.')}</div>
+<div class="c" style="margin-bottom:12px"><h3>Titik impas (BEP)</h3><div data-o="bep"></div>${F('BEP porsi = biaya tetap ÷ laba kotor rata-rata per porsi (dibulatkan ke atas). BEP Rp = biaya tetap ÷ (laba kotor ÷ omzet). Dihitung dari komposisi jualan Normal.')}</div>
+<div class="c"><h3>Bagi hasil</h3><div class="r">${L('Partner 1',T('set,part,0,n',s.part[0].n))}${L('Bagian (%)',P('set,part,0,p',s.part[0].p))}${L('Partner 2',T('set,part,1,n',s.part[1].n))}${L('Bagian (%)',P('set,part,1,p',s.part[1].p))}</div>${L('Dana cadangan (% dari laba bersih)',P('set,res',s.res))}<div data-o="bh"></div>${F('Cadangan = laba bersih bulanan (Normal) × persen cadangan. Sisanya dibagi sesuai persen tiap partner.')}</div></div></div>`},
+data(){return `<div class="grid"><div class="c"><h3>Data & cadangan</h3>${L('Nama Anda (tercatat saat mengubah data)',T('set,user',S.set.user))}<p class="hint">Terakhir diubah: <b data-o="meta"></b></p><button class="b" data-a="exp">Bagikan / ekspor data</button><button class="b s" data-a="imp">Impor data</button><button class="b s" data-a="rest">Pulihkan cadangan otomatis</button><p class="hint">Data tersimpan di browser ini. Jika sinkron dinyalakan, salinannya juga dikirim ke Firestore di proyek Firebase milik Anda sendiri. Ekspor berkala dan kirim ke partner agar data kalian sama.</p></div><div class="c"><h3>Lainnya</h3><button class="b" data-a="print">Cetak ringkasan ke PDF</button><button class="b s" data-a="sample">Muat data CONTOH</button><button class="b l" data-a="reset">Reset semua data</button><p class="hint">Muat contoh dan reset menyimpan cadangan data sebelumnya.</p></div>${syncCard()}</div>`}};
+//#SYNC
+let cfg=null,busy=0,tm,syMsg='';try{cfg=JSON.parse(localStorage.getItem('ngawur_sync'))}catch(e){}
+const sv=()=>{try{localStorage.setItem('ngawur_sync',JSON.stringify(cfg))}catch(e){}};
+function setSy(m){if(m!==undefined)syMsg=m;document.querySelectorAll('#sy,[data-o="syl"]').forEach(e=>e.textContent=cfg?syMsg:'')}
+function mark(){if(!cfg)return;cfg.dirty=1;sv();setSy('Menunggu sinkron');clearTimeout(tm);tm=setTimeout(sync,2500)}
+const U=()=>`https://firestore.googleapis.com/v1/projects/${cfg.p}/databases/(default)/documents/ruang/${cfg.r}`;
+async function api(m,q,body){const r=await fetch(U()+'?key='+cfg.k+(q||''),{method:m,headers:body?{'Content-Type':'application/json'}:{},body});let j=null;try{j=await r.json()}catch(e){}return{s:r.status,j}}
+const rem=j=>{try{const d=JSON.parse(j.fields.json.stringValue);return d&&d.v===1&&d.ing&&d.menu&&d.set&&d.opex&&d.sim?d:null}catch(e){return null}};
+function adopt(d,rt){S=mig(d);persist();cfg.rt=rt;cfg.dirty=0;sv();render()}
+async function push(){const m=S.meta||{at:new Date().toISOString(),by:''},b=JSON.stringify({fields:{json:{stringValue:JSON.stringify(S)},at:{stringValue:m.at},by:{stringValue:m.by||''}}});
+const r=await api('PATCH','&updateMask.fieldPaths=json&updateMask.fieldPaths=at&updateMask.fieldPaths=by&currentDocument.'+(cfg.rt?'updateTime='+encodeURIComponent(cfg.rt):'exists=false'),b);
+if(r.s===200){cfg.rt=r.j.updateTime;cfg.dirty=0;sv();return 1}return r}
+async function conflict(d,rt){if(confirm('Data di cloud berbeda dengan data di perangkat ini.\n\nCloud: '+fm(d.meta)+'\nPerangkat ini: '+fm(S.meta)+'\n\nOK = pakai data cloud (data perangkat ini disimpan ke cadangan).\nBatal = pakai data perangkat ini dan timpa cloud (data cloud disimpan ke cadangan).')){bk();adopt(d,rt)}
+else{try{localStorage.setItem(BK,JSON.stringify(d))}catch(e){}cfg.rt=rt;sv();const r=await push();if(r!==1)throw r}}
+async function sync(){if(!cfg||busy)return;if(!navigator.onLine){setSy('Offline: perubahan menunggu');return}
+busy=1;let retry=0;try{setSy('Menyinkronkan…');const g=await api('GET');
+if(g.s===404){cfg.rt=null;const r=await push();if(r!==1)throw r}else if(g.s!==200)throw g;
+else{const rt=g.j.updateTime;if(cfg.rt===rt){if(cfg.dirty){const r=await push();if(r!==1){if(['FAILED_PRECONDITION','ALREADY_EXISTS','ABORTED'].includes(r.j&&r.j.error&&r.j.error.status))retry=1;else throw r}}}
+else{const d=rem(g.j);if(!d)throw{s:0,j:{error:{message:'data cloud tidak dikenali'}}};if(!cfg.dirty)adopt(d,rt);else await conflict(d,rt)}}
+setSy('Tersinkron '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}))}
+catch(e){setSy(e&&e.s?'Sinkron gagal ('+e.s+(e.j&&e.j.error?': '+e.j.error.message:'')+')':'Offline: perubahan menunggu')}finally{busy=0;if(retry)setTimeout(sync,300)}}
+function setup(t){t=(t||'').trim();let c;if(t.startsWith('NB1.')){try{c=JSON.parse(atob(t.slice(4)))}catch(e){}}
+else{const k=/apiKey["']?\s*:\s*["']([^"']+)/.exec(t),p=/projectId["']?\s*:\s*["']([^"']+)/.exec(t);if(k&&p)c={k:k[1],p:p[1],r:Array.from(crypto.getRandomValues(new Uint8Array(16)),b=>b.toString(16).padStart(2,'0')).join('')}}
+if(!c||!c.k||!c.p||!c.r)return alert('Teks tidak dikenali. Tempel blok firebaseConfig dari Firebase, atau kode sambung dari partner.');
+cfg={p:c.p,k:c.k,r:c.r,rt:null,dirty:S.meta?1:0};sv();render();sync()}
+function syncCard(){return `<div class="c"><h3>Sinkron antar perangkat</h3>`+(cfg?`<p class="hint">Tersambung ke proyek <b>${esc(cfg.p)}</b>. Data tetap bisa dipakai offline dan terkirim otomatis saat online.</p><p><b data-o="syl"></b></p><button class="b" data-a="syncNow">Sinkron sekarang</button><button class="b s" data-a="syncShare">Bagikan kode sambung</button><button class="b l" data-a="syncOff">Putuskan</button><p class="hint">Kode sambung = kunci akses ke data Anda. Kirim hanya ke partner, lewat chat pribadi.</p>`:`<p class="hint">Tempel blok config dari Firebase (lihat panduan setup) atau kode sambung dari partner.</p><textarea id="sx" rows="4" placeholder="Tempel di sini"></textarea><button class="b" data-a="syncOn">Sambungkan</button>`)+`</div>`}
+//#/SYNC
+const mopts=s=>S.menu.map(m=>`<option value="${m.id}"${m.id===s?' selected':''}>${esc(m.n)}</option>`).join('');
+V.shop=()=>{const s=S.set;return `<div class="grid"><div class="c"><h3>Target penjualan</h3><p class="hint">Memakai jualan per hari (Normal) dari tab Simulasi.</p>${L('Periode belanja',sel('set,per',s.per,['Harian','Mingguan']))}${L('Hari buka per minggu',P('set,dpw',s.dpw))}${L('Cadangan stok (%)',P('set,bufr',s.bufr))}</div><div class="c"><h3>Perkiraan belanja</h3><div class="big" data-o="shT"></div><div data-o="shN"></div>${F('Kebutuhan = jualan × takaran resep (bahan olahan diurai ke bahan dasar), dibagi (1 − susut%), ditambah cadangan stok. Kemasan dibulatkan ke atas; biaya = jumlah kemasan × harga beli.')}</div></div><div class="c"><div class="tw" data-o="shL"></div></div>`};
+V.on=()=>{const o=S.on;return `<p class="hint">Isi komisi tiap aplikasi sesuai kontrak Anda. Harga online disarankan = harga toko ÷ (1 − komisi), supaya uang bersih yang masuk sama dengan jual di toko.</p><div class="grid"><div class="c"><h3>Komisi aplikasi</h3>${o.plat.map((p,i)=>`<div class="r">${L('Aplikasi',T(`on,plat,${i},n`,p.n))}${L('Komisi (%)',P(`on,plat,${i},kom`,p.kom))}</div>`).join('')}${L('Lihat tabel untuk',`<select data-p="on,sel">${o.plat.map((p,i)=>`<option value="${i}"${i==o.sel?' selected':''}>${esc(p.n)}</option>`).join('')}</select>`)}</div><div class="c"><div class="tw" data-o="onT"></div>${F('Harga online = harga toko ÷ (1 − komisi%), dibulatkan ke atas. Laba kotor = harga toko × (1 − komisi%) − HPP.')}</div></div>`};
+V.pk=()=>`<p class="hint">Pilih isi paket, lalu isi diskon % atau harga paket. Jika keduanya diisi, harga paket yang dipakai.</p><div class="grid">${S.pk.map(pcard).join('')}</div><button class="b s" data-a="addPk">+ Paket / promo</button>`;
+function pcard(k,x){const id='p'+k.id,p=`pk,${x},`;return `<details class="c" data-k="${id}"${dt(id)}><summary><span>${esc(k.n)||'(tanpa nama)'}<small data-o="pp${k.id}"></small></span><span data-o="pb${k.id}"></span></summary>`+L('Nama paket',T(p+'n',k.n))+'<h4>Isi paket</h4>'+k.items.map((it,j)=>`<div class="r2"><select data-p="${p}items,${j},id">${mopts(it.id)}</select>${P(p+`items,${j},q`,it.q,'placeholder="jml"')}<button class="b l" data-a="pkDel" data-i="${x}" data-j="${j}" aria-label="Hapus">×</button></div>`).join('')+`<button class="b s" data-a="pkAdd" data-i="${x}">+ Menu</button><div class="r">${L('Diskon (%)',P(p+'disc',k.disc))}${L('atau Harga paket (Rp)',P(p+'price',k.price))}</div><div data-o="pd${k.id}"></div>`+F('Hemat = harga normal − harga paket. Laba kotor paket = harga paket − HPP semua isi. Paket harus laku lebih banyak = (laba kotor beli satuan ÷ laba kotor paket) − 1.')+`<button class="b l" data-a="delPk" data-i="${x}">Hapus paket</button></details>`}
+function outs2(o){const z=S.set,sh=shop(S),stp=N(z.step)||1000;
+o.shT=sh.rows.length?rp(sh.tot)+(sh.miss||sh.bad.length?'*':''):'–';
+o.shN=sh.rows.length?`<small>${z.per} · ${sh.rows.length} bahan${sh.miss?' · * bahan tanpa harga/isi kemasan belum dihitung':''}</small>${sh.bad.length?'<br><i class="w">Bahan olahan tanpa hasil jadi belum dihitung: '+esc(sh.bad.join(', '))+'</i>':''}`:`<i class="w">${sh.f?'Isi jualan per hari di tab Simulasi dulu.':'Isi hari buka per minggu (> 0).'}</i>`;
+o.shL=sh.rows.length?`<table><tr><th>Bahan</th><th>Perlu</th><th>Beli</th><th>Biaya</th></tr>${sh.rows.map(r=>`<tr><td>${esc(r.i.n)}</td><td>${nf(r.g)} ${esc(r.i.unit)}</td><td>${r.k==null?'<i class="w">isi dulu</i>':r.k+' × '+nf(N(r.i.qty))}</td><td>${r.c==null?'–':rp(r.c)}</td></tr>`).join('')}</table>`:'';
+const pl=S.on.plat[S.on.sel]||S.on.plat[0],k=N(pl.kom);
+o.onT=k==null||k>=100?'<i class="w">Isi komisi aplikasi ini (0–99%).</i>':`<table><tr><th>Menu</th><th>Toko</th><th>Harga online</th><th>Laba kotor*</th></tr>`+S.menu.map(m=>{const h=hpp(S,m),pr=N(m.price),gp=(pr||0)*(1-k/100)-h.v;return `<tr><td>${esc(m.n)}</td><td>${pr?rp(pr):'–'}</td><td>${pr?rp(onp(pr,k,stp)):'–'}</td><td>${h.miss||!pr?'–':`<span class="${gp<0?'neg':''}">${rp(gp)}</span>`}</td></tr>`}).join('')+'</table><p class="hint">* Laba kotor bila dijual online di harga toko (setelah komisi).</p>';
+for(const q of S.pk){const r=pkg(S,q),id=q.id,g=r.pr&&!r.miss,s=g?st(S,r.fc):'n',sgs=sg(r.h,N(z.tfc),N(z.tmg),stp);
+o['pp'+id]=r.pr?rp(r.pr):'isi diskon / harga paket';
+o['pb'+id]=g?`<span class="t t${s}">${pc(r.fc)} ${LBL[s]}</span>`:'<span class="t tn">–</span>';
+o['pd'+id]=`<dl><dt>Harga normal (satuan)</dt><dd>${rp(r.nor)}</dd><dt>Harga paket</dt><dd>${r.pr?rp(r.pr):'–'}</dd><dt>Hemat pelanggan</dt><dd>${r.pr?rp(r.save)+' ('+pc(r.nor?r.save/r.nor*100:null)+')':'–'}</dd><dt>HPP paket</dt><dd>${r.miss?'<i class="w">belum lengkap</i>':rp(r.h)}</dd><dt>Laba kotor paket</dt><dd>${g?rp(r.gp)+' ('+pc(r.mg)+')':'–'}</dd></dl>`+(g?`<p class="hint">Beli satuan laba kotornya ${rp(r.ngp)}. ${r.gp<=0?'Paket ini tidak untung.':r.more>0?'Paket harus laku '+pc(r.more)+' lebih banyak agar laba kotor total sama.':'Laba kotor paket tidak lebih rendah dari beli satuan.'}</p>`:'')+(!r.miss&&sgs.a?`<button class="b s" data-a="usePk" data-i="${S.pk.indexOf(q)}" data-v="${sgs.a}">Pakai ${rp(sgs.a)}</button><small>food cost ${pc(N(z.tfc))}</small>`:'')}
+return o}
+function outs(){const o={},nm=sm(S,1),B=bep(S),z=S.set,fe=fx(S);
+for(const i of S.ing){const c=uc(S,i.id);o['u'+i.id]=c==null?'<i class="w">isi dulu</i>':ru(c)+'/'+esc(i.unit)}
+const ok=[];
+for(const m of S.menu){const h=hpp(S,m),a=an(m.price,h.v),id=m.id,g=!h.miss&&a;
+m.rec.forEach((r,j)=>{const c=uc(S,r.id),q=N(r.q);o['rc'+id+'_'+j]=c==null||q==null?'<i class="w">isi dulu</i>':rp(c*q)});
+o['pr'+id]=N(m.price)?rp(N(m.price)):'isi harga jual';
+o['hp'+id]=h.miss?`<i class="w">belum lengkap (${h.miss} bahan/takaran kosong)</i>`:rp(h.v);
+o['gp'+id]=g?rp(a.gp)+' ('+pc(a.mg)+')':(!a?'<i class="w">isi harga jual (> 0)</i>':'–');
+const s=g?st(S,a.fc):'n',b=g?`<span class="t t${s}">${pc(a.fc)} ${LBL[s]}</span>`:'<span class="t tn">–</span>';
+o['fc'+id]=g?b:'–';o['bd'+id]=b;
+if(g)ok.push({m,a});
+const sgs=sg(h.v,N(z.tfc),N(z.tmg),N(z.step)||1000),bt=(v,t)=>v?`<button class="b s" data-a="usePrice" data-i="${S.menu.indexOf(m)}" data-v="${v}">Pakai ${rp(v)}</button> <small>${t}</small>`:`<i class="w">target ${t} tidak valid (isi 1–99)</i>`;
+o['sg'+id]=h.miss?'<i class="w">Lengkapi harga bahan dulu.</i>':`<div>${bt(sgs.a,'food cost '+pc(N(z.tfc)))}</div><div>${bt(sgs.b,'margin '+pc(N(z.tmg)))}</div>`}
+o.ox=rp(fe.m);o.od=fe.d==null?'<i class="w">Isi hari buka (> 0)</i>':rp(fe.d)+(fe.days>31?' <i class="w">(hari buka lebih dari 31?)</i>':'');o.meta=S.meta&&S.meta.at?new Date(S.meta.at).toLocaleString('id-ID')+(S.meta.by?' oleh '+esc(S.meta.by):''):'belum pernah';
+const money=(v,c)=>v==null?'–':`<span class="${Math.round(v)<0?'neg':''}">${rp(v)}</span>`;
+(z.sc).forEach((f,i)=>{const s=sm(S,i===1?1:(N(f)||0)/100);Object.entries({q:nf(s.q),om:rp(s.om),hp:rp(s.hp),gp:rp(s.gp),fd:rp(s.F.d),nt:money(s.net),mn:money(s.mon)}).forEach(([k,v])=>o['s'+i+k]=v)});
+o.bep=B.err?`<i class="w">${B.err}</i>`:`<dl><dt>Per hari</dt><dd>${nf(B.pd)} porsi · ${rp(B.rd)}</dd><dt>Per bulan</dt><dd>${nf(B.pm)} porsi · ${rp(B.rm)}</dd><dt>Laba kotor rata-rata</dt><dd>${rp(B.c)}/porsi</dd></dl>${nm.miss?'<i class="w">* Ada harga jual/HPP yang belum lengkap, angka belum akurat.</i>':''}`;
+const net=nm.mon;
+if(net==null)o.bh='<i class="w">Isi hari buka di tab Biaya.</i>';else if(net<=0)o.bh=`<i class="w">Laba bersih bulanan (Normal) ${rp(net)}. Belum ada yang bisa dibagi.</i>`;
+else{const r=bh(S,net);o.bh=`<dl><dt>Laba bersih / bulan</dt><dd>${rp(net)}</dd><dt>Dana cadangan (${nf(r.r)}%)</dt><dd>${rp(r.res)}</dd>${S.set.part.map((p,i)=>`<dt>${esc(p.n||'Partner '+(i+1))} (${nf(N(p.p)||0)}%)</dt><dd>${rp(r.parts[i])}</dd>`).join('')}</dl>`+(Math.abs(r.tot-100)>.01?`<i class="w">Total persen partner ${nf(r.tot)}%, seharusnya 100%.</i>`:'')}
+const e=nm.q?'':'<small>Isi jualan di Simulasi</small>',a=(v)=>nm.q&&v!=null?money(v)+(nm.miss?'*':''):(nm.q?'<small>Isi hari buka di Biaya</small>':e);
+o.h_net=a(nm.net);o.h_mon=a(nm.mon);
+o.h_bep=B.err?`<small>${B.err}</small>`:`${nf(B.pd)} porsi/hari<br><small>${rp(B.rd)}/hari · ${rp(B.rm)}/bulan (${nf(B.pm)} porsi)</small>`;
+o.h_mg=nm.om>0?pc(nm.gp/nm.om*100):e||'–';
+ok.sort((x,y)=>y.a.mg-x.a.mg);const d=x=>x?`${esc(x.m.name||x.m.n)}<br><small>margin ${pc(x.a.mg)} · laba kotor ${rp(x.a.gp)}</small>`:'<small>Lengkapi harga bahan & harga jual</small>';
+o.h_top=d(ok[0]);o.h_low=d(ok[ok.length-1]);
+o.hnote=nm.miss?'* Ada menu terjual yang harga jual atau HPP-nya belum lengkap, jadi angka laba belum akurat.':'';return outs2(o)}
+function fill(){O=outs();document.querySelectorAll('[data-o]').forEach(e=>{const v=O[e.dataset.o];if(v!==undefined)e.innerHTML=v});
+$('ban').textContent=bad?'Penyimpanan browser gagal: data tidak tersimpan. Ekspor data secara berkala.':S.sample?'DATA CONTOH: angka ini bukan data asli. Ganti dengan angka Anda atau Reset di tab Data.':'';setSy()}
+function render(){$('v').innerHTML=V[tab]();document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));fill();const n=document.querySelector('nav'),on=n.querySelector('.on');n.scrollLeft=on.offsetLeft-n.clientWidth/2+on.offsetWidth/2}
+const fm=m=>m&&m.at?new Date(m.at).toLocaleString('id-ID')+(m.by?' oleh '+m.by:''):'belum pernah';
+const f0=()=>S.ing[0]?S.ing[0].id:'';
+async function exp(){const j=JSON.stringify({app:'ngawur-burger',schema:1,data:S},null,1),n='ngawur-burger-'+new Date().toISOString().slice(0,10)+'.json',f=new File([j],n,{type:'application/json'});
+try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Data Ngawur Burger'});return}}catch(e){if(e.name==='AbortError')return}
+const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1e3)}
+function imp(file){const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result).data;if(!d||d.v!==1||!Array.isArray(d.ing)||!Array.isArray(d.menu)||!d.set||!d.opex||!d.sim)throw 0;
+if(confirm('Impor data ini?\n\nFile terakhir diubah: '+fm(d.meta)+'\nData di perangkat ini: '+fm(S.meta)+'\n\nData di perangkat ini akan DITIMPA (cadangan otomatis disimpan).')){bk();S=mig(d);persist();render()}}catch(e){alert('File tidak dikenali. Pakai file JSON hasil ekspor aplikasi ini.')}};r.readAsText(file)}
+const A={
+addIng:()=>{const id=ID();S.ing.push({id,n:'Bahan baru',unit:'g',price:null,qty:null,loss:null});OPEN.add('i'+id);save();render()},
+addMix:()=>{const id=ID();S.ing.push({id,n:'Bahan olahan baru',unit:'g',mix:R(f0(),null),yield:null});OPEN.add('i'+id);save();render()},
+delIng:i=>{const g=S.ing[i];if(!confirm('Hapus "'+g.n+'"? Baris yang memakainya di resep/olahan ikut terhapus.'))return;S.ing.splice(i,1);S.menu.forEach(m=>m.rec=m.rec.filter(r=>r.id!==g.id));S.ing.forEach(o=>o.mix&&(o.mix=o.mix.filter(r=>r.id!==g.id)));save();render()},
+mixAdd:i=>{S.ing[i].mix.push({id:f0(),q:null});save();render()},mixDel:(i,j)=>{S.ing[i].mix.splice(j,1);save();render()},
+recAdd:i=>{S.menu[i].rec.push({id:f0(),q:null});save();render()},recDel:(i,j)=>{S.menu[i].rec.splice(j,1);save();render()},
+addMenu:()=>{const id=ID();S.menu.push({id,n:'Menu baru',cat:'Add-on',price:null,rec:[]});OPEN.add('m'+id);save();render()},
+delMenu:i=>{if(confirm('Hapus menu "'+S.menu[i].n+'"?')){const g=S.menu[i].id;S.menu.splice(i,1);S.pk.forEach(k=>k.items=k.items.filter(t=>t.id!==g));save();render()}},
+addPk:()=>{const id=ID();S.pk.push({id,n:'Paket baru',items:R(S.menu[0]?S.menu[0].id:'',1),disc:null,price:null});OPEN.add('p'+id);save();render()},
+pkAdd:i=>{S.pk[i].items.push({id:S.menu[0]?S.menu[0].id:'',q:1});save();render()},pkDel:(i,j)=>{S.pk[i].items.splice(j,1);save();render()},
+delPk:i=>{if(confirm('Hapus paket "'+S.pk[i].n+'"?')){S.pk.splice(i,1);save();render()}},
+usePk:(i,j,d)=>{S.pk[i].price=d.v;S.pk[i].disc=null;save();render()},
+syncOn:()=>setup($('sx').value),syncNow:()=>sync(1),
+syncShare:async()=>{const t='NB1.'+btoa(JSON.stringify({k:cfg.k,p:cfg.p,r:cfg.r}));try{if(navigator.share){await navigator.share({text:t});return}}catch(e){if(e.name==='AbortError')return}try{await navigator.clipboard.writeText(t);alert('Kode sambung disalin. Kirim lewat chat pribadi ke partner.')}catch(e){prompt('Salin kode sambung ini:',t)}},
+syncOff:()=>{if(confirm('Putuskan sinkron? Data di perangkat ini tetap ada.')){cfg=null;try{localStorage.removeItem('ngawur_sync')}catch(e){}render()}},
+usePrice:(i,j,d)=>{S.menu[i].price=d.v;save();render()},
+exp,imp:()=>$('fi').click(),
+rest:()=>{try{const d=JSON.parse(localStorage.getItem(BK));if(d&&d.v===1&&confirm('Pulihkan cadangan otomatis terakhir? Data sekarang akan diganti.')){S=mig(d);persist();render()}else if(!d)throw 0}catch(e){alert('Belum ada cadangan otomatis.')}},
+sample:()=>{if(confirm('Muat data CONTOH? Data sekarang diganti (cadangan disimpan).')){bk();S=seed(1);persist();tab='home';render()}},
+reset:()=>{if(confirm('Hapus SEMUA data dan mulai dari awal? (cadangan terakhir disimpan)')){bk();S=seed(0);persist();tab='home';render()}},
+print:()=>{tab='home';render();setTimeout(print,200)}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a],[data-t]');if(!b)return;const d=b.dataset;if(d.t){tab=d.t;render();scrollTo(0,0);return}const f=A[d.a];f&&f(+d.i,+d.j,d)});
+document.addEventListener('toggle',e=>{const k=e.target.dataset&&e.target.dataset.k;if(k)e.target.open?OPEN.add(k):OPEN.delete(k)},true);
+['input','change'].forEach(ev=>document.addEventListener(ev,e=>{const t=e.target,p=t.dataset&&t.dataset.p;if(!p||(ev==='input')===(t.tagName==='SELECT'))return;
+if(t.inputMode==='decimal'){if(t.value.includes('-'))t.value=t.value.replace(/-/g,'');t.classList.toggle('bad',t.value!==''&&N(t.value)==null)}
+const a=p.split(','),k=a.pop();a.reduce((o,x)=>o[x],S)[k]=t.value;save();t.tagName==='SELECT'?render():fill()}));
+$('fi').onchange=e=>{const f=e.target.files[0];if(f)imp(f);e.target.value=''};
+try{const c=document.createElement('canvas');c.width=c.height=180;const x=c.getContext('2d');x.fillStyle='#17392B';x.fillRect(0,0,180,180);x.fillStyle='#E8552D';x.font='900 84px system-ui';x.textAlign='center';x.fillText('NB',90,115);$('ai').href=c.toDataURL()}catch(e){}
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+addEventListener('online',()=>sync());document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()});setInterval(()=>{if(!document.hidden)sync()},30000);
+render();sync();
+</script></body></html>
